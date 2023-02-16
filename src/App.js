@@ -1,7 +1,12 @@
+import palavras from "./palavras.js";
+import Jogo from './Jogo.js'
+import Letras from './Letras.js'
+
 function App() {
   return (
-    <div>
-      Jogo da Forca
+    <div className="app">
+      <Jogo/>
+      <Letras/>
     </div>
   );
 }
