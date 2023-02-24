@@ -112,3 +112,11 @@ button:active{
 .escolherPalavra:disabled{
     transform: translateY(0px);
 }
+
+.vencedor{
+    color: #27AE60;
+}
+
+.perdedor{
+    color:#FF0000;
+}

@@ -11,34 +11,71 @@ import forca5 from './assets/forca5.png'
 import forca6 from './assets/forca6.png'
 
 function App() {
-  const [start, setStart] = useState(false);
+
   const [erros, setErros] = useState(0);
   const [disabledStart, setDisabledStart] = useState(false);
   const [palavraSorteada, setPalavraSorteada] = useState([]);
   const [palavraMostrada, setPalavraMostrada] = useState([]);
   const [tentativas, setTentativas] = useState([]);
   const [imagem, setImagem] = useState([forca0, forca1, forca2, forca3, forca4, forca5, forca6]);
+  const [condicaoVitoria, setCondicaoVitoria] = useState("");
+  const [reset, setReset] = useState(false);
 
-  console.log("start:", start);
   console.log("palavraSorteada:", palavraSorteada);
   console.log("erros:", erros);
-  console.log("imagem:", imagem);
+
+  function startGame() {
+    const palavraAleatoria = palavras[Math.floor(Math.random() * palavras.length)];
+    setPalavraSorteada(palavraAleatoria.split(""));
+    setPalavraMostrada(Array(palavraAleatoria.length).fill('_'));
+    setDisabledStart(true)
+  }
+
+  function resetGame() {
+    if (reset) {
+      setReset(false);
+      setErros(0);
+      setPalavraSorteada([]);
+      setPalavraMostrada([]);
+      setTentativas([]);
+      setImagem([forca0, forca1, forca2, forca3, forca4, forca5, forca6]);
+      setCondicaoVitoria("")
+      setDisabledStart(false);
+    }
+    startGame();
+  }
+
+  function endGame() {
+    if (erros > 5) {
+      setPalavraMostrada(palavraSorteada);
+      setCondicaoVitoria("perdedor");
+      setDisabledStart(false);
+      setReset(true);
+    }
+    else if (!palavraMostrada.includes("_")) {
+      setCondicaoVitoria("vencedor");
+      setDisabledStart(false);
+      setReset(true);
+    }
+  }
+
+
 
 
   return (
     <div className="app">
-      <Jogo palavras={palavras} start={start} setStart={setStart}  
-            disabledStart={disabledStart} setDisabledStart={setDisabledStart}
-            palavraSorteada={palavraSorteada} setPalavraSorteada={setPalavraSorteada}
-            palavraMostrada={palavraMostrada} setPalavraMostrada={setPalavraMostrada}
-            imagem={imagem[erros]} setImagem={setImagem} />
-      <Letras start={start} setStart={setStart}
-              disabledStart={disabledStart} setDisabledStart={setDisabledStart}
-              palavraSorteada={palavraSorteada} setPalavraSorteada={setPalavraSorteada}
-              palavraMostrada={palavraMostrada} setPalavraMostrada={setPalavraMostrada}
-              erros={erros} setErros={setErros} tentativas={tentativas} setTentativas={setTentativas}
-              imagem={imagem} setImagem={setImagem}
-              forca0={forca0} forca1={forca1} forca2={forca2} forca3={forca3} forca4={forca4} forca5={forca5} forca6={forca6}/>
+      <Jogo resetGame={resetGame}
+        disabledStart={disabledStart}
+        palavraMostrada={palavraMostrada}
+        imagem={imagem[erros]}
+        condicaoVitoria={condicaoVitoria}
+      />
+      <Letras disabledStart={disabledStart}
+        palavraSorteada={palavraSorteada}
+        palavraMostrada={palavraMostrada}
+        erros={erros} setErros={setErros}
+        tentativas={tentativas} setTentativas={setTentativas}
+        endGame={endGame} />
     </div>
   );
 }
