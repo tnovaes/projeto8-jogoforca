@@ -108,3 +108,7 @@ button:active{
     background: #9FAAB5;
     
 }
+
+.escolherPalavra:disabled{
+    transform: translateY(0px);
+}

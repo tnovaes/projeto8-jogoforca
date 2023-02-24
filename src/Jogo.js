@@ -7,13 +7,27 @@ import forca5 from './assets/forca5.png'
 import forca6 from './assets/forca6.png'
 
 
-export default function Jogo(){
+export default function Jogo({
+    palavras, start, setStart, disabledStart, setDisabledStart, 
+    palavraSorteada, setPalavraSorteada, palavraMostrada, setPalavraMostrada}
+    ) {
+    
+    function startGame(){
+        setStart(true);
+        const palavraAleatoria = palavras[Math.floor(Math.random() * palavras.length)];
+        setPalavraSorteada(palavraAleatoria.split(""));
+        setPalavraMostrada(Array(palavraAleatoria.length).fill('_'));
+        setDisabledStart(true)
 
-    return(
+    }
+
+    return (
         <div className="jogo">
-        <img className="forca" src={forca0}/>
-        <button className="escolherPalavra">Escolher Palavra</button>
-        <div className="palavra">_ _ _ _ _ _ _ _ _ _</div>
+            <img className="forca" src={forca0} />
+            <button className="escolherPalavra" disabled={disabledStart} onClick={()=>startGame()}>Escolher Palavra</button>
+            <div className="palavra">
+                {palavraMostrada.join(" ")}
+            </div>
         </div>
     );
 }
