@@ -8,17 +8,26 @@ export default function Letras({ disabledStart, palavraSorteada, palavraMostrada
             if (palavraSorteada[i].includes(letra)) {
                 palavraMostrada.splice(i, 1, palavraSorteada[i])
             }
-            else if (!palavraSorteada.includes(letra)) {
-                setErros(erros + 1);
-            }
         }
-        endGame();
+            if (!palavraSorteada.includes(letra)) {
+                somarErros();
+            }
+        
+        
+    }
+
+    endGame();
+
+    function somarErros(){
+        const somaErros = erros+1;
+        setErros(somaErros);
     }
 
     return (
         <div className="letras">
             {alfabeto.map(l =>
                 <button
+                    data-test="letter"
                     onClick={() => clickLetter(l)}
                     disabled={(!disabledStart || tentativas.includes(l)) ? true : false}
                     className="letra">{l.toUpperCase()}</button>)}
