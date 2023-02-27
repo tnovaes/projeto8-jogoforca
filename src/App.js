@@ -45,8 +45,8 @@ function App() {
     startGame();
   }
 
-  function endGame() {
-    if (erros > 5) {
+  function endGame(somaErros) {
+    if (somaErros > 5) {
       setPalavraMostrada(palavraSorteada);
       setCondicaoVitoria("perdedor");
       setDisabledStart(false);
@@ -59,8 +59,20 @@ function App() {
     }
   }
 
-
-
+  function clickLetter(letra) {
+    setTentativas([...tentativas, letra]);
+    for (let i = 0; i < palavraSorteada.length; i++) {
+      if (palavraSorteada[i].includes(letra)) {
+        palavraMostrada.splice(i, 1, palavraSorteada[i])
+        endGame();
+      }
+    }
+    if (!palavraSorteada.includes(letra)) {
+      const somaErros = erros + 1;
+      setErros(somaErros);
+      endGame(somaErros);
+    }
+  }
 
   return (
     <div className="app">
@@ -71,11 +83,9 @@ function App() {
         condicaoVitoria={condicaoVitoria}
       />
       <Letras disabledStart={disabledStart}
-        palavraSorteada={palavraSorteada}
-        palavraMostrada={palavraMostrada}
-        erros={erros} setErros={setErros}
-        tentativas={tentativas} setTentativas={setTentativas}
-        endGame={endGame} />
+        clickLetter={clickLetter}
+        tentativas={tentativas}
+      />
     </div>
   );
 }
